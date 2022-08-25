@@ -1,0 +1,35 @@
+{% extends 'base.html'%}
+
+{% block title %}
+{{object}}
+{% endblock title %}
+
+{% block content %}
+    <div class='ui segment'>
+        <div class="header center"><h1>Task Section</h1></div>           
+        <h1>Task Name: {{object.taskname}}</h1>
+        <hr>
+        <h2>Task Begins : {{object.starting}}</h2>
+        <h2>Task Ends : {{object.deadline}}</h2>
+        <hr>
+        {% if object.complete == True  %}
+            <h2>Complete - Yes</h2>
+        {% else %}
+            <h2>Complete  - No</h2>
+        {% endif %}
+        <hr>
+        <!-- <h2>{{object.updated}}</h2>
+        <h2>{{object.created}}</h2> -->
+        <!-- <textarea name="message" rows="10" cols="30">{{object.description}}</textarea>  -->
+        <h2>Task Description - <div class="ui segment" style="width:200px; height:200px"><strong>{{object.description}}</strong></div></h2>
+        <hr>
+        <br>
+        <hr>
+        <button type="button" class=" center btn btn-danger"><a href="{% url 'projects:delete-task' object.pk %}">
+            Delete Task
+        </a></button>
+        <button type="button" class="ui info button"><a href="{% url 'projects:update-task' object.pk %}">
+            Update Task
+         </a></button>
+    </div>
+{% endblock content %}

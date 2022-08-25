@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}
+New Task
+{% endblock title %}
+
+{% block content %}
+    <!-- {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-warning alert-dismissable" role="alert">
+            <button class="close" data-dismiss="alert">
+                <small><sup>x</sup></small>
+            </button>
+            {{ message }}    
+        </div>
+      {% endfor %}
+    {% endif %} -->
+
+   <!--  <form class="d-flex" method="POST">
+
+        {% csrf_token %}
+        {{ form }}
+    </form> --> 
+
+    <section class="section">
+            <div class="container ui segment">
+                <div class="columns">
+                    <div class="column is-offset-4 is-4">
+                        <div class="ui header">Create New Task</div>
+                        <form class="ui form" method="POST">
+                            {% csrf_token %}
+                            <div class="field has-addons">
+                                <div class="control is-expanded">
+                                    {{ form.as_p }}
+                                </div>
+                                <div class="ui segment actions">
+                                    <button type='submit' class="ui positive right labeled icon button">
+                                        Create Task
+                                        <i class="checkmark icon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+{% endblock content %}
+
+<!-- {{ form.date }} -->
+
+{% block scripts %}
+    <!-- <script>
+    $(function () {
+        $("#id_date").datepicker({
+        format:'dd/mm/yyyy',
+        });
+    });
+    </script> -->
+    <script>
+        $(function () {
+        $("#id_date").datetimepicker({
+            format: 'd/m/Y H:i',
+        });
+        });
+    </script>
+{% endblock scripts %}

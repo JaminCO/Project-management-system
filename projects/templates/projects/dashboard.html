@@ -1,0 +1,98 @@
+{% extends 'base.html'%}
+
+{% block title %}
+Dashboard
+{% endblock title %}
+
+{% block content %}
+	<div class="ui grid">
+		<div class="eleven wide column">
+			<div class="ui container header segment">
+				<h1 class="center ui header" >Project Dashboard</h1>
+			</div>
+			<div class="ui segment">
+				{% if active_count >= 2 %}
+					<h2 class="ui description">Active Projects&nbsp;<div class="ui purple horizontal label">{{ active_count }}</div></h2>
+				{% elif active_count <= 1 %}
+					<h2 class="ui description">Active Project&nbsp;<div class="ui purple horizontal label">{{ active_count }}</h2>
+				{% endif %}
+			</div>
+			{% for project in object_list %}
+				<div class="ui segment">
+					<ul>
+						<h2><li><a href="{%url 'projects:project-detail-view' project.pk%}">
+							{{ project.created|date }} - {{ project.name }}
+						</a><a href="{% url 'projects:project-complete' project.pk%}"><i class="fa-check icon"></i></a></li></h2>
+					</ul>
+				</div>
+			{% empty %}
+				<div class='ui segment container'>
+					<h1 class='ui header'>There are No Active Projects</h1>
+				</div>
+			{% endfor %}
+
+			<div class="ui segment">
+				{% if inactive_count >= 2 %}
+					<h2 class="ui description">Completed Projects&nbsp;<div class="ui purple horizontal label">{{ inactive_count }}</div></h2>
+				{% elif inactive_count <= 1 %}
+					<h2 class="ui description">Completed Project&nbsp;<div class="ui purple horizontal label">{{ inactive_count }}</h2>
+				{% endif %}
+			</div>
+			{% for completed in inactive %}
+				<div class="ui segment">
+					<ul>
+						<h2><li><a href="{%url 'projects:project-detail-view' completed.pk%}">
+							<del>{{ completed.created|date }} - {{ completed.name }}</del>
+						</a><a href="{% url 'projects:project-incomplete' completed.pk%}"><i class="fa-times"></i></a></li></h2>
+					</ul>
+				</div>
+			{% empty %}
+				<div class='ui segment container'>
+					<h1 class='ui header'>There are No Completed Projects</h1>
+				</div>
+			{% endfor %}
+
+
+		</div>
+		<div class="five wide column">
+			<form action="" method="GET">
+                <div class="ui action left icon input">
+                <input class="prompt" type="text" name='q' placeholder="Projects..." value="{{search_input}}">
+                <i class="search icon"></i>
+                <button type='submit' class="ui button">Search</button>
+                </div>
+            </form>
+			<div class="ui segment">
+				<button class=" center ui secondary button"><a href="{% url 'projects:new-project'%}">
+					<i class="Add icon"></i>
+					Create New Project
+				</a></button>
+			</div>
+		</div>
+	</div>
+{% endblock content %}
+
+
+
+<!-- {% if isempty == True %}
+<div class='ui container'>
+	<h1 class='ui header'>There are No Active Projects</h1>
+</div>
+{% else %}
+{% for object in project %}
+	<div class="ui container header segment">
+		<h1 class="ui header">Project Dashboard</h1>
+	</div>
+	<div class="ui segment">
+	<ol>
+		<li>	
+			<a href="{%url 'projects:project-detail-view' object.pk%}"><h1 class="ui">{{object}}</h1></a>
+		</li>
+	</ol>
+	</div>
+{% endfor %}
+{% endif %}
+<br>
+<a href="{% url 'projects:new-project'%}" class="ui primary button">
+Create New Project
+</a> -->

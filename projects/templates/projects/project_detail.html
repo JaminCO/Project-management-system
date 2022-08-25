@@ -1,0 +1,87 @@
+{% extends 'base.html'%}
+
+{% block title %}
+{{object.name}}
+{% endblock title %}
+
+{% block content %}
+    <div class="centre ui container header segment">
+        <h1 class="center ui header">Project - {{object}}</h1>
+    </div>
+    <div class='ui segment'>
+            <h1>Project Name: {{object.name}}</h1>
+            <hr>
+            <h2>From : {{object.starting}}</h2>
+            <h2>To : {{object.deadline}}</h2>
+            <hr>
+            {% if object.completed == True  %}
+                <h2>Complete - Yes</h2>
+            {% else %}
+                <h2>Completed  - No</h2>
+            {% endif %}
+            <hr>
+            <h2>Username - {{object.user}}</h2>
+            <hr> 
+            <!-- <textarea name="message" rows="10" cols="30">{{object.description}}</textarea>  -->
+            <h2>Description - <div class="ui segment" style="width:200px; height:200px"><p>{{object.description}}</p></div></h2>
+            <br>
+            <hr>
+            {% if object.user == request.user %}
+            <button type="button" class=" center btn btn-danger"><a href="{% url 'projects:delete-project' object.pk %}">
+                Delete Project
+            </a></button>
+            <button type="button" class="ui secondary button"><a href="{% url 'projects:update-project' object.pk %}">
+               Update Project
+            </a></button>
+            {% endif %}
+    </div>
+
+
+    <div class="ui container header segment">
+        <h1 class="center ui header" >Tasks</h1>
+        <hr>
+        {% if active_count >= 2 %}
+            <h2 class="ui description">Active Tasks&nbsp;<div class="ui purple horizontal label">{{ active_count }}</div></h2>
+        {% elif active_count <= 1 %}
+            <h2 class="ui description">Active Task&nbsp;<div class="ui purple horizontal label">{{ active_count }}</h2>
+        {% endif %}
+    {% for task in active %}
+        <ul>
+            <h2><li><a href="{% url 'projects:task-detail-view' task.pk %}">
+                {{ task.created|date }} - {{ task.taskname }}
+            </a><a href="{% url 'projects:task-complete' task.pk%}"><i class="fa-check icon"></i></a></li></h2>
+        </ul>
+    {% empty %}
+        <div class='ui segment container'>
+            <h1 class='ui header'>There are No Active Tasks</h1>
+        </div>
+    {% endfor %}
+    <hr>
+        <div class="ui segment">
+            {% if inactive_count >= 2 %}
+                <h2 class="ui description">Completed Tasks&nbsp;<div class="ui purple horizontal label">{{ inactive_count }}</div></h2>
+            {% elif inactive_count <= 1 %}
+                <h2 class="ui description">Completed Task&nbsp;<div class="ui purple horizontal label">{{ inactive_count }}</h2>
+            {% endif %}
+
+        {% for task_completed in inactive %}
+            <ul>
+                <h2><li><a href="{% url 'projects:task-detail-view' task_completed.pk %}">
+                    <del>{{ task_completed.created|date }} - {{ task_completed.taskname }}</del>
+                </a></a><a href="{% url 'projects:task-incomplete' task_completed.pk%}"><i class="fa-times"></i></a></li></h2>
+            </ul>
+        {% empty %}
+            <div class='ui segment container'>
+                <h1 class='ui header'>There are No Completed Tasks</h1>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    <hr>
+    <div class="ui segment">
+        <button class=" center ui secondary button"><a href="{% url 'projects:new-task' object.pk%}">
+            <i class="Add icon"></i>
+            Create New Task
+        </a></button>
+    </div>
+{% endblock content %}
