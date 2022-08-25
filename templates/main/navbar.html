@@ -1,0 +1,128 @@
+{% url 'home' as path_to_home %}
+{% url 'projects:dashboard' as path_to_dashboard %}
+{% url 'account_login' as path_to_login %}
+{% url 'account_logout' as path_to_logout %}
+{% url 'account_signup' as path_to_register %}
+{% url 'projects:new-project' as path_to_new_project %}
+<!-- {% url 'profiles:my-invites-view' as path_to_my_invites %}
+{% url 'profiles:invite-profiles-view' as path_to_invites %}
+{% url 'profiles:all-profiles-view' as path_to_all_profiles %} -->
+{% load static %}
+
+
+<style>
+body {
+    font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;b}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+</style>
+</head>
+<body>
+
+<div id="mySidenav" class="ui sidenav">
+    <div class="ui container">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+        <a href="{{path_to_home}}" class="ui {% if request.path == path_to_home %}active{% endif %} item">
+        <!-- <img  class="ui avatar image"  src="{% static 'favicon.png' %}">    -->
+            <i class="home icon"></i>
+            HOME
+        </a>
+        <br>
+        {% if request.user.is_authenticated %}
+            <a href="{{path_to_dashboard}}" class="{% if request.path == path_to_dashboard %}active{% endif %} item">
+                <i class="dashboard icon"></i>
+                Dashboard
+            </a>
+            <br>
+            <a href="{{path_to_new_project}}" class="ui {% if request.path == path_to_home %}active{% endif %} item">
+                <i class="add icon"></i>
+                New Project
+            </a>
+            <br>
+            <a href="{{path_to_logout}}" class="ui {% if request.path == path_to_home %}active{% endif %} item">
+                <i class="logout icon"></i>
+                Logout
+            </a>
+        {% else %}
+            <a href="{{path_to_login}}" class="ui {% if request.path == path_to_home %}active{% endif %} item">
+                <i class="login icon"></i>
+                Login
+            </a>
+            <br>
+            <a href="{{path_to_register}}" class="ui {% if request.path == path_to_home %}active{% endif %} item">
+                <i class="signup icon"></i>
+                Register
+            </a>
+            <br>
+        {% endif %}    
+    </div>
+</div>
+
+<div id="main">
+  <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+  {% block content %}
+  {% endblock content %}
+</div>
+
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+
+// function openNav() {
+//     document.getElementById("mySidenav").style.width = "250px";
+//     document.getElementById("main").style.marginLeft = "250px";
+// }
+
+// function closeNav() {
+//     document.getElementById("mySidenav").style.width = "0";
+//     document.getElementById("main").style.marginLeft= "0";
+// }
+</script>
